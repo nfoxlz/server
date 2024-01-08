@@ -1,0 +1,12 @@
+dubbo:
+  application:
+    name: mis-system
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://${zookeeper.address:192.168.172.128}:2181
+  consumer:
+    timeout: 10000
+  provider:
+    timeout: 30000
