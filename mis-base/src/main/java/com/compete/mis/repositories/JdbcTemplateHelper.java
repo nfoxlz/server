@@ -598,13 +598,23 @@ public final class JdbcTemplateHelper {
             return null;
 
         Map<String, Object> result = new HashMap<>(paramMap);
+        String name;
+        Object val;
         for (Map.Entry<String, Object> entry : result.entrySet()) {
-            if (entry.getKey().toLowerCase().endsWith("_date_time"))
-                entry.setValue(new java.sql.Timestamp((long)entry.getValue()));
-            else if (entry.getKey().toLowerCase().endsWith("_date"))
-                entry.setValue(new java.sql.Date((long)entry.getValue()));
-            else if (entry.getKey().toLowerCase().endsWith("_time"))
-                entry.setValue(new java.sql.Time((long)entry.getValue()));
+
+            val = entry.getValue();
+
+            if (val instanceof Long) {
+
+                name = entry.getKey().toLowerCase();
+
+                if (name.endsWith("_date_time"))
+                    entry.setValue(new java.sql.Timestamp((long)val));
+                else if (name.endsWith("_date") || name.endsWith("_year_month"))
+                    entry.setValue(new java.sql.Date((long)val));
+                else if (name.endsWith("_time"))
+                    entry.setValue(new java.sql.Time((long)val));
+            }
         }
         return result;
     }
