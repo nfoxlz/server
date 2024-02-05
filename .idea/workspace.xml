@@ -4,24 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="与Go语言后台保持兼容。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/SimpleDataTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/SimpleDataTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/HikariDataSourceBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/HikariDataSourceBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-web-base/src/main/java/com/compete/mis/util/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-web-base/src/main/java/com/compete/mis/util/CommonUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705300145005</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="与Go语言后台保持兼容。">
+      <option name="closed" value="true" />
+      <created>1707098046071</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1707098046071</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -191,7 +183,8 @@
       <path value="$PROJECT_DIR$/../.." />
     </ignored-roots>
     <MESSAGE value="Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes" />
+    <MESSAGE value="与Go语言后台保持兼容。" />
+    <option name="LAST_COMMIT_MESSAGE" value="与Go语言后台保持兼容。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
