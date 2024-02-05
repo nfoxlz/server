@@ -458,11 +458,10 @@ public final class JdbcTemplateHelper {
         return queryForTable(helper.getReadOnlySql(path, name, parameters), parameters, tableName);
     }
 
-    public SimpleDataTable queryForSimpleTable(final String sql, final Map<String, ?> paramMap, final String tableName) {
+    public SimpleDataTable queryForSimpleTable(final String sql, final Map<String, ?> paramMap) {
 
-        DataTable table = queryForTable(sql, paramMap, tableName);
+        DataTable table = queryForTable(sql, paramMap);
         SimpleDataTable result = new SimpleDataTable();
-        result.setTableName(tableName);
 
         List<DataColumn> dataColumns = table.getColumns();
         int columnSize = dataColumns.size();
@@ -482,20 +481,20 @@ public final class JdbcTemplateHelper {
         return result;
     }
 
-    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap, final String tableName)
+    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
         Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
-        return queryForSimpleTable(helper.getReadOnlySql(path, name, parameters), parameters, tableName);
+        return queryForSimpleTable(helper.getReadOnlySql(path, name, parameters), parameters);
     }
 
-    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
+    public Map<String, SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
 
         int index = 0;
         String fileName = name;
-        List<SimpleDataTable> tables = new ArrayList<>();
+        Map<String, SimpleDataTable> tables = new HashMap<>();
         while (helper.exists(path, fileName)) {
-            tables.add(queryForSimpleTable(path, fileName, paramMap, fileName));
+            tables.put(fileName, queryForSimpleTable(path, fileName, paramMap));
             fileName = String.format("%s_%d", name, ++index);
         }
 
@@ -644,10 +643,10 @@ public final class JdbcTemplateHelper {
         if (!helper.existsRelatedParam(path, name) || null == data)
             return null;
 
-        SimpleDataTable table;
         Object[][] rows;
         String[] columns;
         int index, columnCount;
+        SimpleDataTable table;
         Map<String, Object> result = new HashMap<>();
         Map<String, String> relatedParam = helper.getRelatedParam(path, name);
         for (Map.Entry<String, String> entry : relatedParam.entrySet())
@@ -714,22 +713,19 @@ public final class JdbcTemplateHelper {
             case Hour -> calendar.get(Calendar.YEAR) * 100000
                     + calendar.get(Calendar.DAY_OF_YEAR) * 100 + calendar.get(Calendar.HOUR);
             case QuarterHour -> calendar.get(Calendar.YEAR) * 1000000 + calendar.get(Calendar.DAY_OF_YEAR) * 1000
-                    + calendar.get(Calendar.HOUR)+ calendar.get(Calendar.MINUTE) / 15;
+                    + calendar.get(Calendar.HOUR) * 10 + calendar.get(Calendar.MINUTE) / 15;
             case Minute -> calendar.get(Calendar.YEAR) * 1000000 + (calendar.get(Calendar.DAY_OF_YEAR) - 1) * 1440
-                    + (calendar.get(Calendar.HOUR) - 1) * 60 + calendar.get(Calendar.MINUTE);
+                    + calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE);
         };
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("no", no);
         paramMap.put("period", period);
         Long number = queryForUpdate(serialNoPath, "getSerialNo", paramMap, Long.class);
-        if (null == number) {
+        if (null == number)
             number = 1L;
-            update(serialNoPath, "insertSerialNo", paramMap);
-        } else {
-            paramMap.put("serial_No", ++number);
-            update(serialNoPath, "updateSerialNo", paramMap);
-        }
+
+        update(serialNoPath, "insertSerialNo", paramMap);
 
         return null == sequenceInfo.getFormat() ? String.valueOf(number)
                 : String.format(sequenceInfo.getFormat(), calendar, number);

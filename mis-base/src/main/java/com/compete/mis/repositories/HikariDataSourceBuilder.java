@@ -52,7 +52,7 @@ public final class HikariDataSourceBuilder implements DataSourceBuilder {
                     properties.load(stream);
                 }
 
-                return properties.getProperty("dbmsName", "postgresql");
+                return properties.getProperty("dbmsName", "postgres");
             });
 
     public static void clearCache() {
@@ -105,7 +105,7 @@ public final class HikariDataSourceBuilder implements DataSourceBuilder {
                 throw new RuntimeException(e);
             }
 
-            return properties.getProperty("dbmsName", "postgresql");
+            return properties.getProperty("dbmsName", "postgres");
         });
     }
 }

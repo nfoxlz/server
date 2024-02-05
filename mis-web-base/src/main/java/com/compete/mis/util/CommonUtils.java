@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.nio.ByteBuffer;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -52,21 +54,25 @@ public final class CommonUtils {
     }
 
     public static void saveCookie(HttpServletResponse response, final long tenantId, final long userId)
-            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException,
+            InvalidKeyException, InvalidAlgorithmParameterException {
 
         // 租户存入Cookies。
+//        Cookie tenantCookie = new Cookie(TenantToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(tenantId))));
         Cookie tenantCookie = new Cookie(TenantToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(tenantId))));
         tenantCookie.setPath("/");
         response.addCookie(tenantCookie);
 
         // 用户存入Cookies。
+//        Cookie userCookie = new Cookie(UserToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(userId))));
         Cookie userCookie = new Cookie(UserToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(userId))));
         userCookie.setPath("/");
         response.addCookie(userCookie);
     }
 
     private static long loadCookie(final Cookie cookie)
-            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException,
+            InvalidKeyException, InvalidAlgorithmParameterException {
         return Convert(Global.Decrypt(Base64.getDecoder().decode(cookie.getValue())));
     }
 
@@ -87,11 +93,8 @@ public final class CommonUtils {
                     hasUser = true;
                 }
             }
-        } catch (IllegalBlockSizeException
-                 | NoSuchPaddingException
-                 | BadPaddingException
-                 | NoSuchAlgorithmException
-                 | InvalidKeyException e) {
+        } catch (IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException | NoSuchAlgorithmException |
+                 InvalidKeyException | InvalidAlgorithmParameterException e) {
             return false;
         }
 

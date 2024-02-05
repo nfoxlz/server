@@ -8,9 +8,11 @@ public final class Menu implements Serializable {
 
     private long parentMenuNo;
 
+    private long sn;
+
     private String displayName;
 
-    private String tooltip;
+    private String toolTip;
 
     private String pluginSetting;
 
@@ -34,6 +36,14 @@ public final class Menu implements Serializable {
         this.parentMenuNo = parentMenuNo;
     }
 
+    public long getSn() {
+        return sn;
+    }
+
+    public void setSn(long sn) {
+        this.sn = sn;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -42,12 +52,12 @@ public final class Menu implements Serializable {
         this.displayName = displayName;
     }
 
-    public String getTooltip() {
-        return tooltip;
+    public String getToolTip() {
+        return toolTip;
     }
 
-    public void setTooltip(String tooltip) {
-        this.tooltip = tooltip;
+    public void setToolTip(String toolTip) {
+        this.toolTip = toolTip;
     }
 
     public String getPluginSetting() {

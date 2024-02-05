@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="Changes" />
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="Changes">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/SimpleDataTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/SimpleDataTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/HikariDataSourceBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/HikariDataSourceBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-web-base/src/main/java/com/compete/mis/util/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-web-base/src/main/java/com/compete/mis/util/CommonUtils.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +38,10 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -38,27 +59,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.mis [clean].executor": "Run",
-    "Maven.mis [compile].executor": "Run",
-    "Maven.mis [package].executor": "Run",
-    "OverrideImplement.generate.javadoc": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "jdk.selected.JAVA_MODULE": "17",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/CompeteMIS/src/GitHub/server",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "应用程序.SystemApplication.executor": "Debug",
-    "应用程序.SystemWebApplication.executor": "Debug"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.mis [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mis [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.mis [package].executor&quot;: &quot;Run&quot;,
+    &quot;OverrideImplement.generate.javadoc&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/CompeteMIS/src/GitHub/server&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;应用程序.SystemApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;应用程序.SystemWebApplication.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\CompeteMIS\src\server\mis\mis-system\src\main\resources" />
@@ -139,11 +161,30 @@
       <option name="project" value="LOCAL" />
       <updated>1704698154966</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Changes">
+      <option name="closed" value="true" />
+      <created>1705300145005</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705300145005</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.param" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
@@ -166,8 +207,8 @@
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/SqlHelper.java</url>
-          <line>127</line>
+          <url>file://$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java</url>
+          <line>122</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>

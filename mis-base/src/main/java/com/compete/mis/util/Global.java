@@ -8,6 +8,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -16,11 +17,14 @@ import java.util.*;
 
 public final class Global {
 
+//    private static final String encryptionName = "AES/CBC/PKCS5Padding";
     private static final String encryptionName = "RSA";
 
     private static PrivateKey privateKey;
 
     private static PublicKey publicKey;
+
+//    private static Key secretKey;
 
     private static String localPath;
 
@@ -73,13 +77,21 @@ public final class Global {
                     7, 100, -96, -36, -118, -113, 36, -81, 2, 3, 1, 0, 1
             }));
 
+//            byte[] key = new byte[32];
+//            Random random = new Random();
+//            for (int i = 0; i < key.length; i++)
+//                key[i] = (byte)(random.nextInt(256) - 128);
+//
+//            secretKey = new SecretKeySpec(SecureRandom.getInstanceStrong().generateSeed(32), "AES");
+
             Properties properties = new Properties();
             // 读取配置文件。
             try (InputStream stream = (new ClassPathResource("/application.properties")).getInputStream()) {
                 properties.load(stream);
             }
             localPath = properties.getProperty("localPath", "./");
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
+//        } catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
     }
@@ -106,6 +118,29 @@ public final class Global {
         return cipher.doFinal(ciphertext);
     }
 
+//    public static byte[] Encrypt(final byte[] plaintext)
+//            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+//        byte[] iv = SecureRandom.getInstanceStrong().generateSeed(16);
+//        Cipher cipher = Cipher.getInstance(encryptionName);
+//        cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
+//        System.out.println("plaintext字节数组（内容）"+Arrays.toString(plaintext));
+//        System.out.println("plaintext字节数组（长度"+plaintext.length);
+//        System.out.println("iv字节数组（内容）"+Arrays.toString(iv));
+//        System.out.println("iv字节数组（长度"+iv.length);
+//        return merge(iv, cipher.doFinal(plaintext));
+//    }
+//
+//    public static byte[] Decrypt(final byte[] ciphertext)
+//            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+//        byte[] iv = new byte[16];
+//        System.arraycopy(ciphertext, 0, iv, 0, 16);
+//        byte[] data = new byte[ciphertext.length - 16];
+//        System.arraycopy(ciphertext, 16, data, 0, data.length);
+//        Cipher cipher = Cipher.getInstance(encryptionName);
+//        cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
+//        return cipher.doFinal(data);
+//    }
+
     public static byte[] Convert(final long value) {
         byte[] result = new byte[8];
         result[0] = (byte) (value & 0xFF);
@@ -118,6 +153,13 @@ public final class Global {
         result[7] = (byte) (value >> 56 & 0xFF);
         return result;
     }
+
+//    private static final byte[] zero =  ByteBuffer.allocate(Long.BYTES).putLong(0L).array();
+
+//    public static byte[] Convert(final long value) {
+////        return merge(ByteBuffer.allocate(Long.BYTES).putLong(value).array(), zero);
+//        return ByteBuffer.allocate(Long.BYTES).putLong(value).array();
+//    }
 
     private static byte[] merge(final byte[] first, final byte[] second) {
         int firstLength = first.length;

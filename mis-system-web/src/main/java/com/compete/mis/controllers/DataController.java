@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,13 +18,13 @@ public class DataController {
     @DubboReference
     private DataService service;
 
-    @RequestMapping(value = "/QueryTable", method = RequestMethod.POST, produces = "application/json")
-    public SimpleDataTable queryTable(final @RequestBody QueryParameter parameter) throws IOException {
-        return service.queryTable(parameter.getPath(), parameter.getName(), parameter.getParameters());
-    }
+//    @RequestMapping(value = "/QueryTable", method = RequestMethod.POST, produces = "application/json")
+//    public SimpleDataTable queryTable(final @RequestBody QueryParameter parameter) throws IOException {
+//        return service.queryTable(parameter.getPath(), parameter.getName(), parameter.getParameters());
+//    }
 
     @RequestMapping(value = "/Query", method = RequestMethod.POST, produces = "application/json")
-    public List<SimpleDataTable> query(final @RequestBody QueryParameter parameter) throws IOException {
+    public Map<String, SimpleDataTable> query(final @RequestBody QueryParameter parameter) throws IOException {
         return service.query(parameter.getPath(), parameter.getName(), parameter.getParameters());
     }
 

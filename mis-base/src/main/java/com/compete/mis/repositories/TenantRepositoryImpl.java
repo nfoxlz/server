@@ -1,5 +1,6 @@
 package com.compete.mis.repositories;
 
+import com.compete.mis.models.Entity;
 import com.compete.mis.models.Tenant;
 import com.compete.mis.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,9 @@ public class TenantRepositoryImpl implements TenantRepository {
                             user.setName(resultSet.getString("Operator_Name"));
                             user.setUserPassword(resultSet.getString("User_Password"));
                             user.setTenant(tenant);
+                            Entity role = new Entity();
+                            role.setId(resultSet.getLong("Role_Id"));
+                            user.setRole(role);
                             return user;
                         });
 

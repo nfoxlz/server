@@ -16,7 +16,6 @@ import org.springframework.transaction.support.TransactionCallback;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @DubboService
@@ -34,7 +33,7 @@ public class DataServiceImpl implements DataService {
      */
     @Override
     public SimpleDataTable queryTable(String path, String name, Map<String, ?> paramMap) throws IOException {
-        return helper.queryForSimpleTable(path, name, paramMap, name);
+        return helper.queryForSimpleTable(path, name, paramMap);
     }
 
     /**
@@ -44,7 +43,7 @@ public class DataServiceImpl implements DataService {
      * @return
      */
     @Override
-    public List<SimpleDataTable> query(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
+    public Map<String, SimpleDataTable> query(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
         return helper.queryForSimpleSet(path, name, paramMap);
     }
 
@@ -139,9 +138,9 @@ public class DataServiceImpl implements DataService {
                     if (null != actionId && saveActionId(actionId))
                         return new Result();
 
-                    String sqlName;
+                    String sqlName, sqlSubname;
                     int count = 0, rowLength, sqlResult;
-                    SimpleDataTable table, firstTable = null;
+                    SimpleDataTable table;//, firstTable = null;
 
                     Result result = verify(path, name, data);
                     if (0 != result.getErrorNo()) {
@@ -151,18 +150,19 @@ public class DataServiceImpl implements DataService {
 
                     long sqlIndex;
                     for (Map.Entry<String, SimpleDataTable> entry : data.entrySet()) {
-
                         table = entry.getValue();
-                        if (null == firstTable)
-                            firstTable = table;
+//                        if (null == firstTable)
+//                            firstTable = table;
 
                         rowLength = table.getRows().length;
+                        sqlName = String.format("%s_%s", name, entry.getKey());
+                        Map<String, Object> relatedParam = helper.getRelatedParameters(path, sqlName, data);
                         for (int index = 0; index < rowLength; index++) {
                             sqlIndex = 0L;
-                            Map<String, ?> paramMap = getParamMap(table, index);
-                            sqlName = String.format("%s_%s", name, entry.getKey());
-                            while (helper.exists(path, sqlName)) {
-                                sqlResult = helper.update(path, sqlName, paramMap);
+                            sqlSubname = sqlName;
+                            Map<String, ?> paramMap = Global.merge(getParamMap(table, index), relatedParam);
+                            while (helper.exists(path, sqlSubname)) {
+                                sqlResult = helper.update(path, sqlSubname, paramMap);
                                 if (0 >= sqlResult) {
 //                                    throw new RuntimeException();
                                     status.setRollbackOnly();
@@ -171,7 +171,7 @@ public class DataServiceImpl implements DataService {
                                     return result;
                                 }
                                 count += sqlResult;
-                                sqlName = String.format("%s_%s_%s", name, entry.getKey(), ++sqlIndex);
+                                sqlSubname = String.format("%s_%s.%s", name, entry.getKey(), ++sqlIndex);
                             }
 //                            sqlResult = helper.update(path, sqlName, getParamMap(table, index));
 //                            if (0 >= sqlResult)
@@ -293,8 +293,8 @@ public class DataServiceImpl implements DataService {
 
         int fileIndex = 0;
         String message;
+        int rowLength = table.getRows().length;
         while (helper.exists(path, verifySqlName)) {
-            int rowLength = table.getRows().length;
             Map<String, Object> param;
             Map<String, Object> relatedParam = helper.getRelatedParameters(path, verifySqlName, data);
             Result result = new Result();
@@ -329,7 +329,6 @@ public class DataServiceImpl implements DataService {
     public Result verify(final String path, final String name, final @NotNull Map<String, SimpleDataTable> data) throws IOException {
 
         String sqlName;
-        SimpleDataTable table;
         Result result = null;
         Map<String, Object> param;
         for (Map.Entry<String, SimpleDataTable> entry : data.entrySet()) {

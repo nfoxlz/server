@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -34,7 +35,8 @@ public class AccountController {
      */
     @RequestMapping(value = "/Authenticate", method = RequestMethod.POST, produces = "application/json")
     public User authenticateAndGetUser(@RequestBody final LoginViewModel model, HttpServletResponse response)
-            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+            throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException,
+            InvalidKeyException, InvalidAlgorithmParameterException {
         User result = service.authenticateAndGetUser(model);
         if (null == result)
             return null;
