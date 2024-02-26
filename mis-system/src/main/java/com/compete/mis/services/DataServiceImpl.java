@@ -206,8 +206,8 @@ public class DataServiceImpl implements DataService {
             return 0;
 
         int count = 0;
-        final int rowLength = table.getRows().length;
-        for (int index = 0; index < rowLength; index++)
+        final int rowsLength = table.getRows().length;
+        for (int index = 0; index < rowsLength; index++)
             count += helper.update(path, sqlName, getParamMap(table, index));
         return count;
     }
@@ -231,7 +231,7 @@ public class DataServiceImpl implements DataService {
             public Result doInTransaction(TransactionStatus status) {
 
                 String sqlName;
-                int count = 0, rowLength, originalRowLength;
+                int count = 0, rowsLength;
                 SaveData tableData;
                 SimpleDataTable table, modifiedTable;
                 Map<String, Object> param, originalParam;
@@ -246,25 +246,24 @@ public class DataServiceImpl implements DataService {
 
                         table = tableData.getAddedTable();
                         if (null != table) {
-                            Result result = verify(path, "%s.%s".formatted(sqlName, "verify"), table, null);
+                            Result result = verify(path, "%s.verify".formatted(sqlName), table, null);
                             if (null != result && 0 != result.getErrorNo()) {
                                 status.setRollbackOnly();
                                 return result;
                             }
-                            count += saveTableData(path, "%s.%s".formatted(sqlName, "add"), table);
+                            count += saveTableData(path, "%s.add".formatted(sqlName), table);
                         }
 
                         table = tableData.getDeletedTable();
                         if (null != table)
-                            count += saveTableData(path, "%s.%s".formatted(sqlName, "delete"), table);
+                            count += saveTableData(path, "%s.delete".formatted(sqlName), table);
 
                         modifiedTable = tableData.getModifiedTable();
                         table = tableData.getModifiedOriginalTable();
                         if (null != modifiedTable && null != table) {
-                            rowLength = modifiedTable.getRows().length;
-                            originalRowLength = table.getRows().length;
-                            sqlName = "%s.%s".formatted(sqlName, "modify");
-                            for (int index = 0; index < rowLength && index < originalRowLength; index++) {
+                            rowsLength = Math.min(modifiedTable.getRows().length, table.getRows().length);
+                            sqlName = "%s.modify".formatted(sqlName);
+                            for (int index = 0; index < rowsLength; index++) {
                                 param = getParamMap(modifiedTable, index);
                                 originalParam = getParamMap(table, index);
                                 for (Map.Entry<String, Object> paramEntry : originalParam.entrySet())
