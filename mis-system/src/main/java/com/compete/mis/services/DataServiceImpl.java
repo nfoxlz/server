@@ -75,11 +75,13 @@ public class DataServiceImpl implements DataService {
             result.setPageNo(currentPageNo);
         } else {
             long pageNo = count / pageSize;
+            if (count % pageSize == 0)
+                pageNo--;
             beginNo = pageNo * pageSize;
             param.put("begin_No", beginNo);
             param.put("page_Size", count - beginNo);
 
-            result.setPageNo(pageNo);
+            result.setPageNo(pageNo + 1);
         }
         result.setData(helper.queryForSimpleSet(path, name, param));
         result.setCount(count);
