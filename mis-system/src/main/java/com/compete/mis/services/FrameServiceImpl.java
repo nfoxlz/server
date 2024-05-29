@@ -11,7 +11,9 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.sql.ResultSetMetaData;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +46,35 @@ public class FrameServiceImpl implements FrameService {
 
     /**
      * @return
+     * @throws IOException
+     */
+    @Override
+    public Map<String, String> getConfigurations() throws IOException {
+        return helper.query("system/frame", "getConfigurations", null, (resultSet) -> {
+
+            Map<String, String> result = new HashMap<>();
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next())
+                result.put(resultSet.getString(1), resultSet.getString(2));
+
+            return result;
+        });
+    }
+
+    /**
+     * @return
      */
     @Override
     public Timestamp getServerDateTime() throws IOException {
         return helper.query("system/frame", "getServerDateTime", null, Timestamp.class);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public Date getAccountingDate() throws IOException {
+        return helper.getAccountingDate();
     }
 
     /**

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/Frame")
@@ -29,9 +31,19 @@ public class FrameController {
         return service.getEnums();
     }
 
+    @RequestMapping(value = "/GetConfigurations", method = RequestMethod.POST, produces = "application/json")
+    public Map<String, String> getConfigurations() throws IOException {
+        return service.getConfigurations();
+    }
+
     @RequestMapping(value = "/GetServerDateTime", method = RequestMethod.POST, produces = "application/json")
     public Timestamp getServerDateTime() throws IOException {
         return service.getServerDateTime();
+    }
+
+    @RequestMapping(value = "/GetAccountingDate", method = RequestMethod.POST, produces = "application/json")
+    public Date getAccountingDate() throws IOException {
+        return service.getAccountingDate();
     }
 
     @RequestMapping(value = "/ClearCache", method = RequestMethod.POST, produces = "application/json")

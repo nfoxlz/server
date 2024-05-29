@@ -177,6 +177,11 @@ public final class JdbcTemplateHelper {
         }
     }
 
+    public <T> T query(final String path, final String name, final Map<String, ?> paramMap, ResultSetExtractor<T> extractor) throws IOException {
+        Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
+        return query(helper.getReadOnlySql(path, name, parameters), parameters, extractor);
+    }
+
     public <T> List<T> query(final String sql, final Map<String, ?> paramMap, final RowMapper<T> rowMapper) {
         try {
             return getJdbcTemplate(builder.getReadOnlyDataSource())
@@ -576,6 +581,9 @@ public final class JdbcTemplateHelper {
                 case "currentDate":
                     result.put(entry.getKey(), new Date());
                     break;
+                case "accountingDate":
+                    result.put(entry.getKey(), getAccountingDate());
+                    break;
                 default:
                     int index = sysName.indexOf(":");
                     String name = sysName.substring(0, index).trim();
@@ -687,7 +695,16 @@ public final class JdbcTemplateHelper {
         return result == 3 ? 2 : result;
     }
 
-    private static final String serialNoPath = "system/frame";
+    public Date getAccountingDate() throws IOException {
+        Integer number = query(systemFramePath, "getAccountingDate", null, Integer.class);
+        int year = number / 10000;
+        int month = number / 100 - year * 100;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, number - year * 10000 - month * 100); // 注意月份是从0开始计数的，所以5月应写为Calendar.MAY
+        return calendar.getTime();
+    }
+
+    private static final String systemFramePath = "system/frame";
 
     public String getSerialNo(final long no) throws IOException {
         //helper.queryForObject("system/frame", "getSerialNo", new HashMap<>(){{"no", no}}, long.class);
@@ -721,11 +738,11 @@ public final class JdbcTemplateHelper {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("no", no);
         paramMap.put("period", period);
-        Long number = queryForUpdate(serialNoPath, "getSerialNo", paramMap, Long.class);
+        Long number = queryForUpdate(systemFramePath, "getSerialNo", paramMap, Long.class);
         if (null == number)
             number = 1L;
 
-        update(serialNoPath, "insertSerialNo", paramMap);
+        update(systemFramePath, "insertSerialNo", paramMap);
 
         return null == sequenceInfo.getFormat() ? String.valueOf(number)
                 : String.format(sequenceInfo.getFormat(), calendar, number);

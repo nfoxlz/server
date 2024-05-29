@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="与Go语言后台保持兼容。">
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="修正分页Bug。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/FrameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/FrameService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/FrameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/FrameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708958032625</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="修正分页Bug。">
+      <option name="closed" value="true" />
+      <created>1714273758831</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1714273758831</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -204,19 +215,20 @@
     </ignored-roots>
     <MESSAGE value="Changes" />
     <MESSAGE value="与Go语言后台保持兼容。" />
-    <option name="LAST_COMMIT_MESSAGE" value="与Go语言后台保持兼容。" />
+    <MESSAGE value="修正分页Bug。" />
+    <option name="LAST_COMMIT_MESSAGE" value="修正分页Bug。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java</url>
-          <line>429</line>
+          <line>434</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java</url>
-          <line>305</line>
+          <line>310</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
