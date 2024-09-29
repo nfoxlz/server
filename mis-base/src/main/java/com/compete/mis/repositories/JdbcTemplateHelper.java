@@ -489,17 +489,19 @@ public final class JdbcTemplateHelper {
     public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
         Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
-        return queryForSimpleTable(helper.getReadOnlySql(path, name, parameters), parameters);
+        SimpleDataTable result = queryForSimpleTable(helper.getReadOnlySql(path, name, parameters), parameters);
+        result.setTableName(name);
+        return result;
     }
 
-    public Map<String, SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
+    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
 
         int index = 0;
         String fileName = name;
-        Map<String, SimpleDataTable> tables = new HashMap<>();
+        List<SimpleDataTable> tables = new ArrayList<>();
         while (helper.exists(path, fileName)) {
-            tables.put(fileName, queryForSimpleTable(path, fileName, paramMap));
+            tables.add(queryForSimpleTable(path, fileName, paramMap));
             fileName = String.format("%s_%d", name, ++index);
         }
 
@@ -581,6 +583,9 @@ public final class JdbcTemplateHelper {
                 case "currentDate":
                     result.put(entry.getKey(), new Date());
                     break;
+//                case "serverDateTime":
+//                    result.put(entry.getKey(), getServerDateTime());
+//                    break;
                 case "accountingDate":
                     result.put(entry.getKey(), getAccountingDate());
                     break;
@@ -591,6 +596,9 @@ public final class JdbcTemplateHelper {
                     switch (name) {
                         case "serialNo":
                             result.put(entry.getKey(), getSerialNo(Long.parseLong(val)));
+                            break;
+                        case "accountingSerialNo":
+                            result.put(entry.getKey(), getSerialNo(Long.parseLong(val), getAccountingCalendar()));
                             break;
                     }
                     break;
@@ -645,7 +653,7 @@ public final class JdbcTemplateHelper {
         return convertDateTime(addSystemParameters(paramMap, path, name, builder.getDbmsName()));
     }
 
-    public Map<String, Object> getRelatedParameters(final String path, final String name, final Map<String, SimpleDataTable> data)
+    public Map<String, Object> getRelatedParameters(final String path, final String name, final List<SimpleDataTable> data)
             throws IOException {
 
         if (!helper.existsRelatedParam(path, name) || null == data)
@@ -654,23 +662,37 @@ public final class JdbcTemplateHelper {
         Object[][] rows;
         String[] columns;
         int index, columnCount;
-        SimpleDataTable table;
+//        SimpleDataTable table;
         Map<String, Object> result = new HashMap<>();
         Map<String, String> relatedParam = helper.getRelatedParam(path, name);
         for (Map.Entry<String, String> entry : relatedParam.entrySet())
-            if (data.containsKey(entry.getValue())) {
-                table = data.get(entry.getValue());
-                rows = table.getRows();
-                if (0 < rows.length) {
-                    columns = table.getColumns();
-                    columnCount = columns.length;
-                    for (index = 0; index < columnCount; index++)
-                        if (columns[index].equals(entry.getKey())) {
-                            result.put(entry.getKey(), rows[0][index]);
-                            break;
-                        }
+            for (SimpleDataTable table : data)
+                if (entry.getValue().equals(table.getTableName())) {
+                    rows = table.getRows();
+                    if (0 < rows.length) {
+                        columns = table.getColumns();
+                        columnCount = columns.length;
+                        for (index = 0; index < columnCount; index++)
+                            if (columns[index].equals(entry.getKey())) {
+                                result.put(entry.getKey(), rows[0][index]);
+                                break;
+                            }
+                    }
+                    break;
                 }
-            }
+//            if (data.containsKey(entry.getValue())) {
+//                table = data.get(entry.getValue());
+//                rows = table.getRows();
+//                if (0 < rows.length) {
+//                    columns = table.getColumns();
+//                    columnCount = columns.length;
+//                    for (index = 0; index < columnCount; index++)
+//                        if (columns[index].equals(entry.getKey())) {
+//                            result.put(entry.getKey(), rows[0][index]);
+//                            break;
+//                        }
+//                }
+//            }
 
         return result;
     }
@@ -695,18 +717,32 @@ public final class JdbcTemplateHelper {
         return result == 3 ? 2 : result;
     }
 
-    public Date getAccountingDate() throws IOException {
+    private Calendar getAccountingCalendar() throws IOException {
         Integer number = query(systemFramePath, "getAccountingDate", null, Integer.class);
         int year = number / 10000;
         int month = number / 100 - year * 100;
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, number - year * 10000 - month * 100); // 注意月份是从0开始计数的，所以5月应写为Calendar.MAY
-        return calendar.getTime();
+        return calendar;
+    }
+
+    public Date getAccountingDate() throws IOException {
+        return getAccountingCalendar().getTime();
+    }
+
+    public Timestamp getServerDateTime() throws IOException {
+        return query("system/frame", "getServerDateTime", null, Timestamp.class);
     }
 
     private static final String systemFramePath = "system/frame";
 
     public String getSerialNo(final long no) throws IOException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getServerDateTime());
+        return getSerialNo(no, calendar);
+    }
+
+    public String getSerialNo(final long no, final Calendar calendar) throws IOException {
         //helper.queryForObject("system/frame", "getSerialNo", new HashMap<>(){{"no", no}}, long.class);
         //String studentStr = JSON.toJSONString(new Object());
         //JSONObject jsonObject = new JSONObject();
@@ -715,16 +751,16 @@ public final class JdbcTemplateHelper {
         if (null == sequenceInfo)
             return null;
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(query("system/frame", "getServerDateTime", null, Timestamp.class));
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(query("system/frame", "getServerDateTime", null, Timestamp.class));
 
         int period = switch (sequenceInfo.getPeriodType()) {
             case None -> 0;
             case Year -> calendar.get(Calendar.YEAR);
-            case Quarter -> calendar.get(Calendar.YEAR) * 10 + (calendar.get(Calendar.MONTH) - 1) / 3;
-            case Month -> calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH);
+            case Quarter -> calendar.get(Calendar.YEAR) * 10 + calendar.get(Calendar.MONTH) / 3;
+            case Month -> calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH) + 1;
             case TenDays -> calendar.get(Calendar.YEAR) * 1000
-                    + calendar.get(Calendar.MONTH) * 10 + ToTenDays(calendar.get(Calendar.DAY_OF_MONTH));
+                    + (calendar.get(Calendar.MONTH) + 1) * 10 + ToTenDays(calendar.get(Calendar.DAY_OF_MONTH));
             case Week -> calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.WEEK_OF_YEAR);
             case Day -> calendar.get(Calendar.YEAR) * 1000 + calendar.get(Calendar.DAY_OF_YEAR);
             case Hour -> calendar.get(Calendar.YEAR) * 100000

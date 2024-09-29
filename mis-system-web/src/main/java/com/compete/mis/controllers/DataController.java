@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/Data")
@@ -24,7 +24,7 @@ public class DataController {
 //    }
 
     @RequestMapping(value = "/Query", method = RequestMethod.POST, produces = "application/json")
-    public Map<String, SimpleDataTable> query(final @RequestBody QueryParameter parameter) throws IOException {
+    public List<SimpleDataTable> query(final @RequestBody QueryParameter parameter) throws IOException {
         return service.query(parameter.getPath(), parameter.getName(), parameter.getParameters());
     }
 

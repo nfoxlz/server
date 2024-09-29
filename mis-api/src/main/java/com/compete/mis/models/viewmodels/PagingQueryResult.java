@@ -1,21 +1,21 @@
 package com.compete.mis.models.viewmodels;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
 public final class PagingQueryResult implements Serializable {
 
-    private Map<String, SimpleDataTable> data;
+    private List<SimpleDataTable> data;
 
     private long count;
 
     private long pageNo;
 
-    public Map<String, SimpleDataTable> getData() {
+    public List<SimpleDataTable> getData() {
         return data;
     }
 
-    public void setData(Map<String, SimpleDataTable> data) {
+    public void setData(List<SimpleDataTable> data) {
         this.data = data;
     }
 

@@ -66,7 +66,7 @@ public class FrameServiceImpl implements FrameService {
      */
     @Override
     public Timestamp getServerDateTime() throws IOException {
-        return helper.query("system/frame", "getServerDateTime", null, Timestamp.class);
+        return helper.getServerDateTime();
     }
 
     /**
