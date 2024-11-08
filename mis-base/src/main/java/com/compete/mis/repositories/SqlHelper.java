@@ -1,6 +1,7 @@
 package com.compete.mis.repositories;
 
 import com.compete.mis.util.Global;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 public final class SqlHelper {
 
     private static final String sqlPath = Global.getLocalPath("plugins/%s/%s/%s.sql");
+
+    private static final String sqlConfigPath = Global.getLocalPath("plugins/%s/%s.json");
 
     private static final String paramPath = Global.getLocalPath("plugins/%s/%s/%s.param");
 
@@ -40,6 +43,11 @@ public final class SqlHelper {
 //            .build(key -> Files.readString(ResourceUtils.getFile(key).toPath()));
             .build();
 
+    private static final Cache<String, SqlConfig> sqlConfigCache = Caffeine
+            .newBuilder()
+            .maximumSize(1024)
+            .expireAfterWrite(2, TimeUnit.HOURS)
+            .build();
 
     private static final Cache<String, Map<String, String>> paramCache = Caffeine
             .newBuilder()
@@ -61,6 +69,7 @@ public final class SqlHelper {
 
     public static void clearCache() {
         sqlCache.invalidateAll();
+        sqlConfigCache.invalidateAll();
         paramCache.invalidateAll();
         sysParamCache.invalidateAll();
         relatedParamCache.invalidateAll();
@@ -185,6 +194,24 @@ public final class SqlHelper {
 
     public boolean existsReadOnly(final String path, final String name) throws IOException {
         return exists(path, name, builder.getReadOnlyDbmsName());
+    }
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
+    public static SqlConfig getSqlConfig(final String path) {
+        return sqlConfigCache.get(path, key -> {
+            try {
+                return ResourceUtils.getFile(key).exists()
+                        ? objectMapper.readValue(Files.readString(ResourceUtils.getFile(key).toPath()), SqlConfig.class)
+                        : new SqlConfig();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public static SqlConfig getSqlConfig(final String path, final String name) {
+        return getSqlConfig(sqlConfigPath.formatted(path, name));
     }
 
     public static boolean existsParam(final String path) {

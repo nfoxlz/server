@@ -145,6 +145,15 @@ public final class JdbcTemplateHelper {
         return query(helper.getReadOnlySql(path, name, parameters), parameters, requiredType);
     }
 
+    public <T> T queryForUpdate(final String sql, final Map<String, ?> paramMap, ResultSetExtractor<T> extractor) {
+        try {
+            return getJdbcTemplate(builder.getDataSource())
+                    .query(sql, paramMap, extractor);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public <T> T queryForUpdate(final String sql, final Map<String, ?> paramMap, final Class<T> requiredType) {
         try {
             return getJdbcTemplate(builder.getDataSource()).queryForObject(sql, paramMap, requiredType);
@@ -391,15 +400,14 @@ public final class JdbcTemplateHelper {
         }
     }
 
-    public DataTable queryForTable(final String sql, final Map<String, ?> paramMap, final String tableName) {
+    public DataTable queryForTable(final String sql, final Map<String, ?> paramMap, final String tableName, final boolean isUpdate) {
 
 //        final DataTable table = new DataTable();
 //        table.setTableName(tableName);
 //        final List<DataColumn> columns = new ArrayList<>();
 //        table.setColumns(columns);
 //        //final LobHandler handler = new DefaultLobHandler();
-
-        return query(sql, paramMap, (resultSet) -> {
+        ResultSetExtractor<DataTable> extractor = (resultSet) -> {
 
             final DataTable table = new DataTable();
             table.setTableName(tableName);
@@ -428,7 +436,9 @@ public final class JdbcTemplateHelper {
             table.setRows(rows);
 
             return table;
-        });
+        };
+
+        return isUpdate ? queryForUpdate(sql, paramMap, extractor) : query(sql, paramMap, extractor);
 
 //        table.setRows(query(sql, paramMap, (resultSet, rowIndex) -> {
 //
@@ -457,15 +467,16 @@ public final class JdbcTemplateHelper {
 //        return table;
     }
 
-    public DataTable queryForTable(final String path, final String name, final Map<String, ?> paramMap, final String tableName)
+    public DataTable queryForTable(final String path, final String name, final Map<String, ?> paramMap, final String tableName, final boolean isUpdate)
             throws IOException {
         Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
-        return queryForTable(helper.getReadOnlySql(path, name, parameters), parameters, tableName);
+        return queryForTable(isUpdate ? helper.getSql(path, name, parameters) : helper.getReadOnlySql(path, name, parameters),
+                parameters, tableName, isUpdate);
     }
 
-    public SimpleDataTable queryForSimpleTable(final String sql, final Map<String, ?> paramMap) {
+    public SimpleDataTable queryForSimpleTable(final String sql, final Map<String, ?> paramMap, final boolean isUpdate) {
 
-        DataTable table = queryForTable(sql, paramMap);
+        DataTable table = queryForTable(sql, paramMap, isUpdate);
         SimpleDataTable result = new SimpleDataTable();
 
         List<DataColumn> dataColumns = table.getColumns();
@@ -488,20 +499,37 @@ public final class JdbcTemplateHelper {
 
     public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
+        return queryForSimpleTable(path, name, paramMap, false);
+    }
+
+    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
+            throws IOException {
         Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
-        SimpleDataTable result = queryForSimpleTable(helper.getReadOnlySql(path, name, parameters), parameters);
+        SimpleDataTable result = queryForSimpleTable(isUpdate ? helper.getSql(path, name, parameters) : helper.getReadOnlySql(path, name, parameters),
+                parameters, isUpdate);
         result.setTableName(name);
         return result;
     }
 
     public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
             throws IOException {
+        return queryForSimpleSet(path, name, paramMap, false);
+    }
+
+    @FunctionalInterface
+    private interface SqlExists {
+        boolean exists(String path, String name);
+    }
+
+    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
+            throws IOException {
 
         int index = 0;
         String fileName = name;
+        SqlExists sqlExists = isUpdate ? (p, n) -> exists(p, n) : (p, n) -> existsReadOnly(p, n);
         List<SimpleDataTable> tables = new ArrayList<>();
-        while (helper.exists(path, fileName)) {
-            tables.add(queryForSimpleTable(path, fileName, paramMap));
+        while (sqlExists.exists(path, fileName)) {
+            tables.add(queryForSimpleTable(path, fileName, paramMap, isUpdate));
             fileName = String.format("%s_%d", name, ++index);
         }
 
@@ -510,22 +538,23 @@ public final class JdbcTemplateHelper {
 
     private static final String defaultTableName = "Table1";
 
-    public DataTable queryForTable(final String sql, final Map<String, ?> paramMap) {
-        return queryForTable(sql, paramMap, defaultTableName);
+    public DataTable queryForTable(final String sql, final Map<String, ?> paramMap, final boolean isUpdate) {
+        return queryForTable(sql, paramMap, defaultTableName, isUpdate);
     }
 
-    public DataTable queryForTable(final String path, final String name, final Map<String, ?> paramMap)
+    public DataTable queryForTable(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
             throws IOException {
-        return queryForTable(path, name, paramMap, defaultTableName);
+        return queryForTable(path, name, paramMap, defaultTableName, isUpdate);
     }
 
-    public List<DataTable> query(final String path, final String name, final Map<String, ?> paramMap)
+    public List<DataTable> query(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
             throws IOException {
         String sqlName = name;
         int index = 0;
+        SqlExists sqlExists = isUpdate ? (p, n) -> exists(p, n) : (p, n) -> existsReadOnly(p, n);
         final List<DataTable> result = new ArrayList<>();
-        while (helper.existsReadOnly(path, sqlName)) {
-            result.add(queryForTable(path, sqlName, paramMap, "Table" + ++index));
+        while (sqlExists.exists(path, sqlName)) {
+            result.add(queryForTable(path, sqlName, paramMap, "Table" + ++index, isUpdate));
             sqlName = name + "." + index;
         }
         return result;
@@ -554,6 +583,10 @@ public final class JdbcTemplateHelper {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static boolean checkUseTransaction(final String path, final String name) {
+        return SqlHelper.getSqlConfig(path, name).isUseTransaction();
     }
 
     public Map<String, ?> addSystemParameters(final Map<String, ?> paramMap, final String path) throws IOException {

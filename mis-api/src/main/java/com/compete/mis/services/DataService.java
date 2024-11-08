@@ -1,9 +1,6 @@
 package com.compete.mis.services;
 
-import com.compete.mis.models.viewmodels.PagingQueryResult;
-import com.compete.mis.models.viewmodels.Result;
-import com.compete.mis.models.viewmodels.SaveData;
-import com.compete.mis.models.viewmodels.SimpleDataTable;
+import com.compete.mis.models.viewmodels.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +10,15 @@ public interface DataService {
 
     SimpleDataTable queryTable(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
 
-    List<SimpleDataTable> query(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
+    SimpleDataTable queryTableForUpdate(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
+
+    SimpleDataTable queryTableByConfig(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
+
+    QueryResult query(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
+
+    QueryResult queryForUpdate(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
+
+    QueryResult queryByConfig(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
 
     PagingQueryResult pagingQuery(final String path, final String name, final Map<String, ?> paramMap, long currentPageNo, short pageSize) throws IOException;
 

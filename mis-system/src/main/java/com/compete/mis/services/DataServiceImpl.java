@@ -1,9 +1,7 @@
 package com.compete.mis.services;
 
-import com.compete.mis.models.viewmodels.PagingQueryResult;
-import com.compete.mis.models.viewmodels.Result;
-import com.compete.mis.models.viewmodels.SaveData;
-import com.compete.mis.models.viewmodels.SimpleDataTable;
+import com.compete.mis.exceptions.BusinessException;
+import com.compete.mis.models.viewmodels.*;
 import com.compete.mis.repositories.JdbcTemplateHelper;
 import com.compete.mis.util.ErrorManager;
 import com.compete.mis.util.Global;
@@ -11,7 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.transaction.support.TransactionCallback;
 
 import java.io.IOException;
@@ -42,10 +43,101 @@ public class DataServiceImpl implements DataService {
      * @param name
      * @param paramMap
      * @return
+     * @throws IOException
      */
     @Override
-    public List<SimpleDataTable> query(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
-        return helper.queryForSimpleSet(path, name, paramMap);
+    public SimpleDataTable queryTableForUpdate(String path, String name, Map<String, ?> paramMap) throws IOException {
+        return helper.execute(new TransactionCallback<>() {
+
+            /**
+             * @param status
+             * @return
+             */
+            @Override
+            public SimpleDataTable doInTransaction(TransactionStatus status) {
+                try {
+                    return helper.queryForSimpleTable(path, name, paramMap, true);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    /**
+     * @param path
+     * @param name
+     * @param paramMap
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public SimpleDataTable queryTableByConfig(String path, String name, Map<String, ?> paramMap) throws IOException {
+        return JdbcTemplateHelper.checkUseTransaction(path, name)
+                ? queryTableForUpdate(path, name, paramMap)
+                : queryTable(path, name, paramMap);
+    }
+
+    /**
+     * @param path
+     * @param name
+     * @param paramMap
+     * @return
+     */
+    @Override
+    public QueryResult query(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
+        QueryResult result = new QueryResult();
+        try {
+            result.setData(helper.queryForSimpleSet(path, name, paramMap));
+        } catch (UncategorizedSQLException e) {
+            Global.extractMessage(e, result);
+        }
+        return result;
+    }
+
+    /**
+     * @param path
+     * @param name
+     * @param paramMap
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public QueryResult queryForUpdate(String path, String name, Map<String, ?> paramMap) throws IOException {
+        return helper.execute(new TransactionCallback<>() {
+
+            /**
+             * @param status
+             * @return
+             */
+            @Override
+            public QueryResult doInTransaction(TransactionStatus status) {
+                QueryResult result = new QueryResult();
+                try {
+                    result.setData(helper.queryForSimpleSet(path, name, paramMap, true));
+                } catch (UncategorizedSQLException e) {
+                    status.setRollbackOnly();
+                    Global.extractMessage(e, result);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return result;
+            }
+        });
+    }
+
+    /**
+     * @param path
+     * @param name
+     * @param paramMap
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public QueryResult queryByConfig(String path, String name, Map<String, ?> paramMap) throws IOException {
+        return JdbcTemplateHelper.checkUseTransaction(path, name)
+                ? queryForUpdate(path, name, paramMap)
+                : query(path, name, paramMap);
     }
 
     /**

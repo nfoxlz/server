@@ -24,8 +24,8 @@ public class DataController {
 //    }
 
     @RequestMapping(value = "/Query", method = RequestMethod.POST, produces = "application/json")
-    public List<SimpleDataTable> query(final @RequestBody QueryParameter parameter) throws IOException {
-        return service.query(parameter.getPath(), parameter.getName(), parameter.getParameters());
+    public QueryResult query(final @RequestBody QueryParameter parameter) throws IOException {
+        return service.queryByConfig(parameter.getPath(), parameter.getName(), parameter.getParameters());
     }
 
     @RequestMapping(value = "/PagingQuery", method = RequestMethod.POST, produces = "application/json")

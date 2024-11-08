@@ -2,6 +2,7 @@ package com.compete.mis.services;
 
 import com.compete.mis.models.viewmodels.EnumInfo;
 import com.compete.mis.models.viewmodels.Menu;
+import com.compete.mis.models.viewmodels.PeriodYearMonthParameter;
 import com.compete.mis.repositories.HikariDataSourceBuilder;
 import com.compete.mis.repositories.JdbcTemplateHelper;
 import com.compete.mis.repositories.SqlHelper;
@@ -49,8 +50,8 @@ public class FrameServiceImpl implements FrameService {
      * @throws IOException
      */
     @Override
-    public Map<String, String> getConfigurations() throws IOException {
-        return helper.query("system/frame", "getConfigurations", null, (resultSet) -> {
+    public Map<String, String> getSettings() throws IOException {
+        return helper.query("system/frame", "getSettings", null, (resultSet) -> {
 
             Map<String, String> result = new HashMap<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -75,6 +76,29 @@ public class FrameServiceImpl implements FrameService {
     @Override
     public Date getAccountingDate() throws IOException {
         return helper.getAccountingDate();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isFinanceClosed() throws IOException {
+        return helper.query("system/frame", "isFinanceClosed", null, boolean.class);
+    }
+
+    /**
+     * @param periodYearMonth
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public boolean isFinanceClosed(int periodYearMonth) throws IOException {
+        try
+        {
+            return helper.query("system/frame", "isFinanceClosedByDate", new HashMap<>() {{ put("Year_Month", periodYearMonth); }}, boolean.class);
+        } catch (NullPointerException exception) {
+            return false;
+        }
     }
 
     /**

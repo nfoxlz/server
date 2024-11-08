@@ -1,6 +1,8 @@
 package com.compete.mis.util;
 
+import com.compete.mis.models.viewmodels.Result;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.UncategorizedSQLException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -236,6 +238,14 @@ public final class Global {
                     result.put(entry.getKey(), entry.getValue());
 
         return result;
+    }
+
+    public static void extractMessage(UncategorizedSQLException e, Result result) {
+        String message = e.getMessage().replace(e.getSql(), "");
+        int index = message.indexOf("SQL state [") + 12;
+        result.setErrorNo(-Integer.parseInt(message.substring(index, index + 4)));
+        index = message.indexOf("ERROR: ") + 7;
+        result.setMessage(message.substring(index, message.indexOf("\n")));
     }
 
 //    public static String format(final String formatString, final Object ... arguments) {
