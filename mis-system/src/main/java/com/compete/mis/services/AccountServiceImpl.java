@@ -4,6 +4,7 @@ import com.compete.mis.models.Tenant;
 import com.compete.mis.models.User;
 import com.compete.mis.models.viewmodels.LoginViewModel;
 import com.compete.mis.repositories.TenantRepository;
+import com.compete.mis.util.Global;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +27,11 @@ public class AccountServiceImpl implements AccountService {
             return null;
 
         User result = repository.getUser(tenant, model.getUser());
+        if (Global.verify(model.getPassword(), result.getUserPassword())) {
+            result.setUserPassword("*");
+            return result;
+        }
 
-        return result;
+        return null;
     }
 }

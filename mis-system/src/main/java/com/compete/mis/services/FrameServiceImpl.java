@@ -8,10 +8,12 @@ import com.compete.mis.repositories.JdbcTemplateHelper;
 import com.compete.mis.repositories.SqlHelper;
 import com.compete.mis.runtime.Session;
 import com.compete.mis.util.ErrorManager;
+import com.compete.mis.util.Global;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSetMetaData;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -76,6 +78,19 @@ public class FrameServiceImpl implements FrameService {
     @Override
     public Date getAccountingDate() throws IOException {
         return helper.getAccountingDate();
+    }
+
+    /**
+     * @param originalPassword
+     * @param newPassword
+     * @return
+     */
+    @Override
+    public boolean modifyPassword(String originalPassword, String newPassword) throws IOException, NoSuchAlgorithmException {
+        if (Global.verify(originalPassword, helper.queryForUpdate("system/frame", "getPassword", null, String.class)))
+            return helper.update("system/frame", "updatePassword", new HashMap<>() {{ put("password", Global.Encrypt(newPassword)); }}) > 0;
+
+        return false;
     }
 
     /**

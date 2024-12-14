@@ -146,10 +146,10 @@ public final class SqlHelper {
         return index < 1 ? null : name.substring(0, index);
     }
 
-    public static String getSql(final String path, final String name, final String dbmsName, final Map<String, ?> paramMap) {
+    public static String getSql(final String path, final String name, final String dbmsName, final Map<String, ?> paramMap, String sortDescription) {
 
         String sql = getSql(sqlPath.formatted(path, dbmsName, name));
-        if (paramMap != null)
+        if (null != paramMap)
         {
             String paramName = null;
             if (existsParam(path, name, dbmsName))
@@ -165,15 +165,28 @@ public final class SqlHelper {
                     sql = sql.replace("{" + entry.getKey() + "}", paramMap.containsKey(entry.getKey()) ? entry.getValue() : "");
         }
 
+        sql = sql.replace("{order_By}",
+                null == sortDescription ? ""
+                        : sql.toUpperCase().contains("ORDER BY") ? " " + sortDescription + ", "
+                        : " ORDER BY " + sortDescription + " ");
+
         return sql;
     }
 
+    public String getSql(final String path, final String name, final Map<String, ?> paramMap, String sortDescription) throws IOException {
+        return getSql(path, name, builder.getDbmsName(), paramMap, sortDescription);
+    }
+
     public String getSql(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
-        return getSql(path, name, builder.getDbmsName(), paramMap);
+        return getSql(path, name, paramMap, null);
+    }
+
+    public String getReadOnlySql(final String path, final String name, final Map<String, ?> paramMap, String sortDescription) throws IOException {
+        return getSql(path, name, builder.getReadOnlyDbmsName(), paramMap, sortDescription);
     }
 
     public String getReadOnlySql(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
-        return getSql(path, name, builder.getReadOnlyDbmsName(), paramMap);
+        return getReadOnlySql(path, name, paramMap, null);
     }
 
     public static boolean exists(final String path) {
@@ -286,15 +299,15 @@ public final class SqlHelper {
         return getRelatedParam(path, name, builder.getReadOnlyDbmsName());
     }
 
-    public static String getEntitySql(final String entityName, final String path, final String name, final String dbmsName) {
-        return String.format(getSql(path, name, dbmsName, null), entityName);
+    public static String getEntitySql(final String entityName, final String path, final String name, final String dbmsName, String sortDescription) {
+        return String.format(getSql(path, name, dbmsName, null, sortDescription), entityName);
     }
 
-    public String getEntitySql(final String entityName, final String path, final String name) throws IOException {
-        return getEntitySql(entityName, path, name, builder.getDbmsName());
+    public String getEntitySql(final String entityName, final String path, final String name, String sortDescription) throws IOException {
+        return getEntitySql(entityName, path, name, builder.getDbmsName(), sortDescription);
     }
 
-    public String getEntitySqlReadOnly(final String entityName, final String path, final String name) throws IOException {
-        return getEntitySql(entityName, path, name, builder.getReadOnlyDbmsName());
+    public String getEntitySqlReadOnly(final String entityName, final String path, final String name, String sortDescription) throws IOException {
+        return getEntitySql(entityName, path, name, builder.getReadOnlyDbmsName(), sortDescription);
     }
 }

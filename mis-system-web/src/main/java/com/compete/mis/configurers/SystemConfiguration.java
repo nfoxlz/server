@@ -19,7 +19,8 @@ public class SystemConfiguration extends WebMvcConfigurationSupport {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(createAuthorizationInterceptor()) // 添加权限拦截器。
                 .addPathPatterns("/**") // 全部路径全部类型添加。
-                .excludePathPatterns("/api/Account/**");    // .excludePathPatterns("/api/versionControl/**").excludePathPatterns("/api/plugin/**").excludePathPatterns("/error*"); // 排除账户目录与错误目录。
+                .excludePathPatterns("/api/Account/**")
+                .excludePathPatterns("/public/**");    // .excludePathPatterns("/api/versionControl/**").excludePathPatterns("/api/plugin/**").excludePathPatterns("/error*"); // 排除账户目录与错误目录。
         super.addInterceptors(registry);
     }
 

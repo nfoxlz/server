@@ -41,10 +41,10 @@ public class AccountController {
         if (null == result)
             return null;
 
-        if (!Global.verify(model.getPassword(), result.getUserPassword()))
-            return null;
+//        if (!Global.verify(model.getPassword(), result.getUserPassword()))
+//            return null;
 
-        result.setUserPassword("*");
+//        result.setUserPassword("*");
 //        Tenant tenant = new Tenant();
 //        tenant.setId(result.getTenant().getId());
 //        tenant.setCode(result.getTenant().getCode());

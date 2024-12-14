@@ -497,23 +497,23 @@ public final class JdbcTemplateHelper {
         return result;
     }
 
-    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap)
+    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap, String sortDescription)
             throws IOException {
-        return queryForSimpleTable(path, name, paramMap, false);
+        return queryForSimpleTable(path, name, paramMap, sortDescription, false);
     }
 
-    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
+    public SimpleDataTable queryForSimpleTable(final String path, final String name, final Map<String, ?> paramMap, String sortDescription, final boolean isUpdate)
             throws IOException {
         Map<String, ?> parameters = addConvertParameters(paramMap, path, name);
-        SimpleDataTable result = queryForSimpleTable(isUpdate ? helper.getSql(path, name, parameters) : helper.getReadOnlySql(path, name, parameters),
+        SimpleDataTable result = queryForSimpleTable(isUpdate ? helper.getSql(path, name, parameters, sortDescription) : helper.getReadOnlySql(path, name, parameters, sortDescription),
                 parameters, isUpdate);
         result.setTableName(name);
         return result;
     }
 
-    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap)
+    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap, String sortDescription)
             throws IOException {
-        return queryForSimpleSet(path, name, paramMap, false);
+        return queryForSimpleSet(path, name, paramMap, sortDescription, false);
     }
 
     @FunctionalInterface
@@ -521,7 +521,7 @@ public final class JdbcTemplateHelper {
         boolean exists(String path, String name);
     }
 
-    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap, final boolean isUpdate)
+    public List<SimpleDataTable> queryForSimpleSet(final String path, final String name, final Map<String, ?> paramMap, String sortDescription, final boolean isUpdate)
             throws IOException {
 
         int index = 0;
@@ -529,7 +529,7 @@ public final class JdbcTemplateHelper {
         SqlExists sqlExists = isUpdate ? (p, n) -> exists(p, n) : (p, n) -> existsReadOnly(p, n);
         List<SimpleDataTable> tables = new ArrayList<>();
         while (sqlExists.exists(path, fileName)) {
-            tables.add(queryForSimpleTable(path, fileName, paramMap, isUpdate));
+            tables.add(queryForSimpleTable(path, fileName, paramMap, sortDescription, isUpdate));
             fileName = String.format("%s_%d", name, ++index);
         }
 

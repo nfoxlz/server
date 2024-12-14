@@ -5,6 +5,7 @@ import com.compete.mis.models.viewmodels.Menu;
 import com.compete.mis.models.viewmodels.PeriodYearMonthParameter;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,8 @@ public interface FrameService {
     Timestamp getServerDateTime() throws IOException;
 
     Date getAccountingDate() throws IOException;
+
+    public boolean modifyPassword(String originalPassword, String newPassword) throws IOException, NoSuchAlgorithmException;
 
     boolean isFinanceClosed() throws IOException;
 

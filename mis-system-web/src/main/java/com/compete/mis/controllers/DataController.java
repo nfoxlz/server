@@ -30,7 +30,7 @@ public class DataController {
 
     @RequestMapping(value = "/PagingQuery", method = RequestMethod.POST, produces = "application/json")
     public PagingQueryResult pagingQuery(final @RequestBody PagingQueryParameter parameter) throws IOException {
-        return service.pagingQuery(parameter.getPath(), parameter.getName(), parameter.getParameters(), parameter.getCurrentPageNo(), parameter.getPageSize());
+        return service.pagingQuery(parameter.getPath(), parameter.getName(), parameter.getParameters(), parameter.getCurrentPageNo(), parameter.getPageSize(), parameter.getSortDescription());
     }
 
     @RequestMapping(value = "/Save", method = RequestMethod.POST, produces = "application/json")

@@ -28,7 +28,7 @@ public class TenantRepositoryImpl implements TenantRepository {
     private String tenantDbmsName;
 
     private <T> List<T> queryForObjectList(final String path, final String name, final Map<String, ?> paramMap, final RowMapper<T> rowMapper) {
-        return jdbcTemplate.query(SqlHelper.getSql(path, name, tenantDbmsName, paramMap), paramMap, rowMapper);
+        return jdbcTemplate.query(SqlHelper.getSql(path, name, tenantDbmsName, paramMap, null), paramMap, rowMapper);
     }
 
     private <T> T queryForObject(final String path, final String name, final Map<String, ?> paramMap, final RowMapper<T> rowMapper) {
@@ -75,7 +75,7 @@ public class TenantRepositoryImpl implements TenantRepository {
         paramMap.put("code", code);
 
         List<User> list = new NamedParameterJdbcTemplate(builder.getDataSource(tenant.getReadOnlyDbServerName()))
-                .query(SqlHelper.getSql("system/common", "getUserByCode", builder.getDbmsName(tenant.getReadOnlyDbServerName()), paramMap),
+                .query(SqlHelper.getSql("system/common", "getUserByCode", builder.getDbmsName(tenant.getReadOnlyDbServerName()), paramMap, null),
                         paramMap,
                         (resultSet, rowIndex) -> {
                             User user = new User();

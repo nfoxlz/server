@@ -35,7 +35,7 @@ public class DataServiceImpl implements DataService {
      */
     @Override
     public SimpleDataTable queryTable(String path, String name, Map<String, ?> paramMap) throws IOException {
-        return helper.queryForSimpleTable(path, name, paramMap);
+        return helper.queryForSimpleTable(path, name, paramMap, null);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DataServiceImpl implements DataService {
             @Override
             public SimpleDataTable doInTransaction(TransactionStatus status) {
                 try {
-                    return helper.queryForSimpleTable(path, name, paramMap, true);
+                    return helper.queryForSimpleTable(path, name, paramMap, null,true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -88,7 +88,7 @@ public class DataServiceImpl implements DataService {
     public QueryResult query(final String path, final String name, final Map<String, ?> paramMap) throws IOException {
         QueryResult result = new QueryResult();
         try {
-            result.setData(helper.queryForSimpleSet(path, name, paramMap));
+            result.setData(helper.queryForSimpleSet(path, name, paramMap, null));
         } catch (UncategorizedSQLException e) {
             Global.extractMessage(e, result);
         }
@@ -114,7 +114,7 @@ public class DataServiceImpl implements DataService {
             public QueryResult doInTransaction(TransactionStatus status) {
                 QueryResult result = new QueryResult();
                 try {
-                    result.setData(helper.queryForSimpleSet(path, name, paramMap, true));
+                    result.setData(helper.queryForSimpleSet(path, name, paramMap, null,true));
                 } catch (UncategorizedSQLException e) {
                     status.setRollbackOnly();
                     Global.extractMessage(e, result);
@@ -149,7 +149,7 @@ public class DataServiceImpl implements DataService {
      * @return
      */
     @Override
-    public PagingQueryResult pagingQuery(final String path, final String name, final Map<String, ?> paramMap, final long currentPageNo, final short pageSize) throws IOException {
+    public PagingQueryResult pagingQuery(final String path, final String name, final Map<String, ?> paramMap, final long currentPageNo, final short pageSize, String sortDescription) throws IOException {
 
         PagingQueryResult result = new PagingQueryResult();
         long count = helper.query(path, name + ".count", paramMap, long.class);
@@ -176,7 +176,10 @@ public class DataServiceImpl implements DataService {
 
             result.setPageNo(pageNo + 1);
         }
-        result.setData(helper.queryForSimpleSet(path, name, param));
+
+//        param.put("order_By", sortDescription);
+
+        result.setData(helper.queryForSimpleSet(path, name, param, sortDescription));
         result.setCount(count);
 
         return result;

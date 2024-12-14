@@ -20,7 +20,7 @@ public interface DataService {
 
     QueryResult queryByConfig(final String path, final String name, final Map<String, ?> paramMap) throws IOException;
 
-    PagingQueryResult pagingQuery(final String path, final String name, final Map<String, ?> paramMap, long currentPageNo, short pageSize) throws IOException;
+    PagingQueryResult pagingQuery(final String path, final String name, final Map<String, ?> paramMap, long currentPageNo, short pageSize, String sortDescription) throws IOException;
 
     Result save(final String path, final String name, final List<SimpleDataTable> data, final byte[] actionId);
 

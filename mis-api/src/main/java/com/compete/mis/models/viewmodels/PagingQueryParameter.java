@@ -8,6 +8,8 @@ public final class PagingQueryParameter extends QueryParameter implements Serial
 
     private short pageSize;
 
+    private String sortDescription;
+
     public long getCurrentPageNo() {
         return currentPageNo;
     }
@@ -22,5 +24,13 @@ public final class PagingQueryParameter extends QueryParameter implements Serial
 
     public void setPageSize(short pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getSortDescription() {
+        return sortDescription;
+    }
+
+    public void setSortDescription(String sortDescription) {
+        this.sortDescription = sortDescription;
     }
 }
