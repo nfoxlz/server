@@ -4,29 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="完成了财务模块；&#10;修正一些Bug。">
-      <change afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/ModifyPasswordParameter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="增加单据查询；&#10;修正Bug。">
+      <change afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/LocalGlobal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/SaveConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryParameter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/models/viewmodels/PagingQueryParameter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/DataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/FrameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-api/src/main/java/com/compete/mis/services/FrameService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/JdbcTemplateHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/SqlHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/SqlHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/repositories/TenantRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/configurers/SystemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/configurers/SystemConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/FrameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/java/com/compete/mis/controllers/FrameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/AccountServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,12 +35,12 @@
   }
 }</component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="e74dbe4c-9a4b-42f0-9c6d-044b74ed3e09" />
+    <option name="defaultAccountId" value="8b237867-52aa-4b39-9979-fbf4a4a8e735" />
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/nfoxlz/server.git&quot;,
-    &quot;accountId&quot;: &quot;e74dbe4c-9a4b-42f0-9c6d-044b74ed3e09&quot;
+    &quot;accountId&quot;: &quot;5d055b4a-f70e-4f67-a408-7c12e463a4d1&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -99,7 +82,7 @@
     &quot;project.structure.last.edited&quot;: &quot;SDK&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
     &quot;应用程序.SystemApplication.executor&quot;: &quot;Debug&quot;,
     &quot;应用程序.SystemWebApplication.executor&quot;: &quot;Debug&quot;
@@ -236,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731077657503</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="增加单据查询；&#10;修正Bug。">
+      <option name="closed" value="true" />
+      <created>1734143993116</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1734143993116</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -262,7 +253,8 @@
     <MESSAGE value="修正分页Bug。" />
     <MESSAGE value="增加对财务模块的支持；&#10;修正一些Bug。" />
     <MESSAGE value="完成了财务模块；&#10;修正一些Bug。" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成了财务模块；&#10;修正一些Bug。" />
+    <MESSAGE value="增加单据查询；&#10;修正Bug。" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加单据查询；&#10;修正Bug。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

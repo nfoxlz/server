@@ -133,5 +133,6 @@ public class FrameServiceImpl implements FrameService {
         SqlHelper.clearCache();
         HikariDataSourceBuilder.clearCache();
         ErrorManager.clearCache();
+        LocalGlobal.clearCache();
     }
 }

@@ -246,6 +246,23 @@ public class DataServiceImpl implements DataService {
                         return result;
                     }
 
+                    Map<String, Object> commonData = null;
+                    SaveConfig config = LocalGlobal.getSqlConfig(String.format("%s/%s", path, name));
+                    String commonTable = config.getCommonTable();
+                    if (null != commonTable && !commonTable.isEmpty())
+                        for (SimpleDataTable table : data)
+                            if (commonTable.equals(table.getTableName())) {
+                                if (0 < table.getRows().length) {
+                                    Object[] row = table.getRows()[0];
+                                    String[] columns = table.getColumns();
+                                    int length = columns.length;
+                                    commonData = new HashMap<>();
+                                    for (int i = 0; i < length; i++)
+                                        commonData.put(columns[i], row[i]);
+                                }
+                                break;
+                            }
+
                     long sqlIndex;
                     for (SimpleDataTable table : data) {
 //                        table = entry.getValue();
@@ -255,6 +272,13 @@ public class DataServiceImpl implements DataService {
                         rowLength = table.getRows().length;
                         sqlName = String.format("%s_%s", name, table.getTableName());
                         Map<String, Object> relatedParam = helper.getRelatedParameters(path, sqlName, data);
+                        if (null != commonData)
+                            if (null == relatedParam)
+                                relatedParam = commonData;
+                            else
+                                for (Map.Entry<String, Object> entry : commonData.entrySet())
+                                    relatedParam.put(entry.getKey(), entry.getValue());
+
                         for (int index = 0; index < rowLength; index++) {
                             sqlIndex = 0L;
                             sqlSubname = sqlName;
