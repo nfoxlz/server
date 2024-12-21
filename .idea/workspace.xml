@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="增加单据查询；&#10;修正Bug。">
-      <change afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/LocalGlobal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/SaveConfig.java" afterDir="false" />
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="修正权限维护不能保存的Bug。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/FrameServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +32,7 @@
   }
 }</component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="8b237867-52aa-4b39-9979-fbf4a4a8e735" />
+    <option name="defaultAccountId" value="5d055b4a-f70e-4f67-a408-7c12e463a4d1" />
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -227,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734143993116</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="修正权限维护不能保存的Bug。">
+      <option name="closed" value="true" />
+      <created>1734234750437</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1734234750437</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -254,7 +259,8 @@
     <MESSAGE value="增加对财务模块的支持；&#10;修正一些Bug。" />
     <MESSAGE value="完成了财务模块；&#10;修正一些Bug。" />
     <MESSAGE value="增加单据查询；&#10;修正Bug。" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加单据查询；&#10;修正Bug。" />
+    <MESSAGE value="修正权限维护不能保存的Bug。" />
+    <option name="LAST_COMMIT_MESSAGE" value="修正权限维护不能保存的Bug。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

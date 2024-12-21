@@ -285,7 +285,7 @@ public class DataServiceImpl implements DataService {
                             Map<String, ?> paramMap = Global.merge(getParamMap(table, index), relatedParam);
                             while (helper.exists(path, sqlSubname)) {
                                 count += helper.update(path, sqlSubname, paramMap);
-                                sqlSubname = String.format("%s_%s.%s", name, table.getTableName(), ++sqlIndex);
+                                sqlSubname = String.format("%s_%s.%d", name, table.getTableName(), ++sqlIndex);
                             }
 //                            sqlResult = helper.update(path, sqlName, getParamMap(table, index));
 //                            if (0 >= sqlResult)
