@@ -5,7 +5,7 @@ dubbo:
     name: dubbo
     port: -1
   registry:
-    address: zookeeper://${zookeeper.address:192.168.17.129}:2181
+    address: zookeeper://${zookeeper.address:192.168.117.130}:2181
   consumer:
     timeout: 10000
   provider:

@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="修正权限维护不能保存的Bug。">
+    <list default="true" id="d5d2d279-e561-4e9c-89fb-1ebf07e36028" name="Changes" comment="代码优化。">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/java/com/compete/mis/services/DataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/mis-base/src/main/java/com/compete/mis/util/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system-web/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mis-system/src/main/resources/database.business.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +37,6 @@
     &quot;assignee&quot;: &quot;nfoxlz&quot;
   }
 }</component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="5d055b4a-f70e-4f67-a408-7c12e463a4d1" />
-  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/nfoxlz/server.git&quot;,
@@ -79,7 +82,7 @@
     &quot;project.structure.last.edited&quot;: &quot;SDK&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
     &quot;应用程序.SystemApplication.executor&quot;: &quot;Debug&quot;,
     &quot;应用程序.SystemWebApplication.executor&quot;: &quot;Debug&quot;
@@ -101,7 +104,7 @@
       <recent name="D:\Projects\CompeteMIS\src\server\mis\mis-system\src\main\resources\plugins\system\frame\postgresql" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.SystemWebApplication">
+  <component name="RunManager" selected="应用程序.SystemApplication">
     <configuration name="SystemApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.compete.mis.SystemApplication" />
       <module name="mis-system" />
@@ -130,8 +133,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="应用程序.SystemWebApplication" />
         <item itemvalue="应用程序.SystemApplication" />
+        <item itemvalue="应用程序.SystemWebApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -232,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734234750437</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="代码优化。">
+      <option name="closed" value="true" />
+      <created>1734782781337</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1734782781337</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -260,7 +271,8 @@
     <MESSAGE value="完成了财务模块；&#10;修正一些Bug。" />
     <MESSAGE value="增加单据查询；&#10;修正Bug。" />
     <MESSAGE value="修正权限维护不能保存的Bug。" />
-    <option name="LAST_COMMIT_MESSAGE" value="修正权限维护不能保存的Bug。" />
+    <MESSAGE value="代码优化。" />
+    <option name="LAST_COMMIT_MESSAGE" value="代码优化。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -191,7 +191,7 @@ public final class Global {
             plaintext[index] += salt[index];
 
         return Base64.getEncoder()
-                .encodeToString(merge(salt, MessageDigest.getInstance("MD5").digest(plaintext)));
+                .encodeToString(merge(salt, MessageDigest.getInstance("SHA512").digest(plaintext)));
     }
 
     public static String Encrypt(final String password) throws NoSuchAlgorithmException {
