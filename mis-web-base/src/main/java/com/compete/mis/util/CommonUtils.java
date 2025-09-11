@@ -59,13 +59,13 @@ public final class CommonUtils {
 
         // 租户存入Cookies。
 //        Cookie tenantCookie = new Cookie(TenantToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(tenantId))));
-        Cookie tenantCookie = new Cookie(TenantToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(tenantId))));
+        Cookie tenantCookie = new Cookie(TenantToken, Base64.getEncoder().encodeToString(Global.privateSymmetricEncrypt(Global.Convert(tenantId))));
         tenantCookie.setPath("/");
         response.addCookie(tenantCookie);
 
         // 用户存入Cookies。
 //        Cookie userCookie = new Cookie(UserToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(userId))));
-        Cookie userCookie = new Cookie(UserToken, Base64.getEncoder().encodeToString(Global.Encrypt(Global.Convert(userId))));
+        Cookie userCookie = new Cookie(UserToken, Base64.getEncoder().encodeToString(Global.privateSymmetricEncrypt(Global.Convert(userId))));
         userCookie.setPath("/");
         response.addCookie(userCookie);
     }
@@ -73,7 +73,7 @@ public final class CommonUtils {
     private static long loadCookie(final Cookie cookie)
             throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException,
             InvalidKeyException, InvalidAlgorithmParameterException {
-        return Convert(Global.Decrypt(Base64.getDecoder().decode(cookie.getValue())));
+        return Convert(Global.privateSymmetricDecrypt(Base64.getDecoder().decode(cookie.getValue())));
     }
 
     public static boolean loadCookie(HttpServletRequest request, ReferenceValue<Long> tenantId, ReferenceValue<Long> userId) {

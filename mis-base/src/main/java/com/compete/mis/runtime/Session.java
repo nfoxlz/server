@@ -10,6 +10,8 @@ public final class Session {
 
     private static final ThreadLocal<Long> user = new ThreadLocal<>();
 
+    private static final ThreadLocal<String> sign = new ThreadLocal<>();
+
     public static Tenant getTenant() {
         return tenant.get();
     }
@@ -25,5 +27,13 @@ public final class Session {
 
     public static void setUser(long user) {
         Session.user.set(user);
+    }
+
+    public static String getSign() {
+        return sign.get();
+    }
+
+    public static void setSign(String sign) {
+        Session.sign.set(sign);
     }
 }

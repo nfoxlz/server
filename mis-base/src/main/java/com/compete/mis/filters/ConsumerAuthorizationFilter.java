@@ -37,8 +37,8 @@ public class ConsumerAuthorizationFilter implements Filter {
         if (null == tenant)
             return null;
         invocation.setAttachment(Constants.SESSION_TENANT_NAME, tenant);
-
         invocation.setAttachment(Constants.SESSION_USER_NAME, Session.getUser());
+//        invocation.setAttachment(Constants.SESSION_DATA_SIGNATURE, Session.getSign());
 
         return invoker.invoke(invocation);
     }

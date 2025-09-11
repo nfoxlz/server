@@ -2,7 +2,6 @@ package com.compete.mis.services;
 
 import com.compete.mis.models.viewmodels.EnumInfo;
 import com.compete.mis.models.viewmodels.Menu;
-import com.compete.mis.models.viewmodels.PeriodYearMonthParameter;
 import com.compete.mis.repositories.HikariDataSourceBuilder;
 import com.compete.mis.repositories.JdbcTemplateHelper;
 import com.compete.mis.repositories.SqlHelper;
@@ -88,7 +87,7 @@ public class FrameServiceImpl implements FrameService {
     @Override
     public boolean modifyPassword(String originalPassword, String newPassword) throws IOException, NoSuchAlgorithmException {
         if (Global.verify(originalPassword, helper.queryForUpdate("system/frame", "getPassword", null, String.class)))
-            return helper.update("system/frame", "updatePassword", new HashMap<>() {{ put("password", Global.Encrypt(newPassword)); }}) > 0;
+            return helper.update("system/frame", "updatePassword", new HashMap<>() {{ put("password", Global.encrypt(newPassword)); }}) > 0;
 
         return false;
     }

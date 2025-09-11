@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -55,5 +56,10 @@ public class AccountController {
 
         CommonUtils.saveCookie(response, result.getTenant().getId(), result.getId());
         return result;
+    }
+
+    @RequestMapping(value = "/GetPublicKey", method = RequestMethod.POST, produces = "application/json")
+    public byte[] authenticateAndGetUser() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, UnsupportedEncodingException {
+        return Global.getPublic();
     }
 }

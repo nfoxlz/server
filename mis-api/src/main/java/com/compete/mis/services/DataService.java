@@ -26,5 +26,5 @@ public interface DataService {
 
     Result differentiatedSave(final String path, final String name, final Map<String, SaveData> data, final byte[] actionId);
 
-    Result verify(final String path, final String name, final List<SimpleDataTable> data) throws IOException;
+//    Result verify(final String path, final String name, final List<SimpleDataTable> data) throws IOException;
 }

@@ -391,7 +391,8 @@ public final class JdbcTemplateHelper {
             case Types.NUMERIC:
                 return resultSet.getBigDecimal(columnIndex);
             case Types.DOUBLE:
-                return resultSet.getDouble(columnIndex);
+//                return resultSet.getDouble(columnIndex);
+                return Double.parseDouble(resultSet.getString(columnIndex).replace(",", "").replace("$", ""));
             case Types.FLOAT:
             case Types.REAL:
                 return resultSet.getFloat(columnIndex);

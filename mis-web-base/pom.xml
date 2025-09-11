@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.compete</groupId>
         <artifactId>mis</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.compete</groupId>
             <artifactId>mis-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.dubbo</groupId>

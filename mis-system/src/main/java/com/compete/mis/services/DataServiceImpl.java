@@ -185,7 +185,7 @@ public class DataServiceImpl implements DataService {
         return result;
     }
 
-    private Map<String, Object> getParamMap(final SimpleDataTable table, final int index) {
+    private Map<String, ?> getParamMap(final SimpleDataTable table, final int index) {
         String[] columns = table.getColumns();
         Object[] row = table.getRows()[index];
         int columnLength = columns.length, rowLength = row.length;
@@ -240,11 +240,11 @@ public class DataServiceImpl implements DataService {
                     int count = 0, rowLength;
 //                    SimpleDataTable table;//, firstTable = null;
 
-                    Result result = verify(path, name, data);
-                    if (0 != result.getErrorNo()) {
-                        status.setRollbackOnly();
-                        return result;
-                    }
+//                    Result result = verify(path, name, data);
+//                    if (0 != result.getErrorNo()) {
+//                        status.setRollbackOnly();
+//                        return result;
+//                    }
 
                     Map<String, Object> commonData = null;
                     SaveConfig config = LocalGlobal.getSqlConfig(String.format("%s/%s", path, name));
@@ -284,6 +284,13 @@ public class DataServiceImpl implements DataService {
                             sqlSubname = sqlName;
                             Map<String, ?> paramMap = Global.merge(getParamMap(table, index), relatedParam);
                             while (helper.exists(path, sqlSubname)) {
+
+                                Result result = verify(path, sqlSubname, paramMap);
+                                if (null != result && 0 != result.getErrorNo()) {
+                                    status.setRollbackOnly();
+                                    return result;
+                                }
+
                                 count += helper.update(path, sqlSubname, paramMap);
                                 sqlSubname = String.format("%s_%s.%d", name, table.getTableName(), ++sqlIndex);
                             }
@@ -295,8 +302,14 @@ public class DataServiceImpl implements DataService {
                     }
 
                     sqlName = String.format("%s.after", name);
-                    if (helper.exists(path, sqlName))
+                    if (helper.exists(path, sqlName)) {
+                        Result result = verify(path, sqlName, null);
+                        if (null != result && 0 != result.getErrorNo()) {
+                            status.setRollbackOnly();
+                            return result;
+                        }
                         count += helper.update(path, sqlName, null);
+                    }
 //                    if (null != firstTable && 0 < firstTable.getRows().length) {
 //                        sqlName = String.format("%s.after", name);
 //                        if (helper.exists(path, sqlName))
@@ -304,6 +317,7 @@ public class DataServiceImpl implements DataService {
 ////                            count += helper.update(path, sqlName, getParamMap(firstTable, 0));
 //                    }
 
+                    Result result = new Result();
                     if (0 == count) {
 //                                    throw new RuntimeException();
                         status.setRollbackOnly();
@@ -323,15 +337,26 @@ public class DataServiceImpl implements DataService {
         });
     }
 
-    private int saveTableData(final String path, final String sqlName, final SimpleDataTable table) throws IOException {
+    private Result saveTableData(TransactionStatus status, final String path, final String sqlName, final SimpleDataTable table) throws IOException {
+
         if (!helper.exists(path, sqlName))
-            return 0;
+            return null;
 
         int count = 0;
         final int rowsLength = table.getRows().length;
-        for (int index = 0; index < rowsLength; index++)
+        for (int index = 0; index < rowsLength; index++) {
+            Map<String, ?> param = getParamMap(table, index);
+            Result result = verify(path, sqlName, param);
+            if (null != result && 0 != result.getErrorNo()) {
+                status.setRollbackOnly();
+                return result;
+            }
             count += helper.update(path, sqlName, getParamMap(table, index));
-        return count;
+        }
+
+        Result result = new Result();
+        result.setErrorNo(count);
+        return result;
     }
 
     /**
@@ -356,7 +381,7 @@ public class DataServiceImpl implements DataService {
                 int count = 0, rowsLength;
                 SaveData tableData;
                 SimpleDataTable table, modifiedTable;
-                Map<String, Object> param, originalParam;
+                Map<String, ?> param, originalParam;
 
                 try {
                     if (null != actionId && saveActionId(actionId))
@@ -368,17 +393,31 @@ public class DataServiceImpl implements DataService {
 
                         table = tableData.getAddedTable();
                         if (null != table) {
-                            Result result = verify(path, "%s.verify".formatted(sqlName), table, null);
-                            if (null != result && 0 != result.getErrorNo()) {
+                            Result result = saveTableData(status, path, "%s.add".formatted(sqlName), table);
+                            if (null != result && 0 > result.getErrorNo()) {
                                 status.setRollbackOnly();
                                 return result;
                             }
-                            count += saveTableData(path, "%s.add".formatted(sqlName), table);
+                            count += result.getErrorNo();
                         }
+//                        if (null != table) {
+//                            Result result = verify(path, "%s.verify".formatted(sqlName), table, null);
+//                            if (null != result && 0 != result.getErrorNo()) {
+//                                status.setRollbackOnly();
+//                                return result;
+//                            }
+//                            count += saveTableData(path, "%s.add".formatted(sqlName), table);
+//                        }
 
                         table = tableData.getDeletedTable();
-                        if (null != table)
-                            count += saveTableData(path, "%s.delete".formatted(sqlName), table);
+                        if (null != table) {
+                            Result result = saveTableData(status, path, "%s.delete".formatted(sqlName), table);
+                            if (null != result && 0 > result.getErrorNo()) {
+                                status.setRollbackOnly();
+                                return result;
+                            }
+                            count += result.getErrorNo();
+                        }
 
                         modifiedTable = tableData.getModifiedTable();
                         table = tableData.getModifiedOriginalTable();
@@ -388,8 +427,14 @@ public class DataServiceImpl implements DataService {
                             for (int index = 0; index < rowsLength; index++) {
                                 param = getParamMap(modifiedTable, index);
                                 originalParam = getParamMap(table, index);
-                                for (Map.Entry<String, Object> paramEntry : originalParam.entrySet())
-                                    param.put("Original_%s".formatted(paramEntry.getKey()), paramEntry.getValue());
+                                for (Map.Entry<String, ?> paramEntry : originalParam.entrySet())
+                                    ((Map<String, Object>)param).put("Original_%s".formatted(paramEntry.getKey()), paramEntry.getValue());
+
+                                Result result = verify(path, sqlName, param);
+                                if (0 != result.getErrorNo()) {
+                                    status.setRollbackOnly();
+                                    return result;
+                                }
                                 count += helper.update(path, sqlName, param);
                             }
                         }
@@ -407,60 +452,86 @@ public class DataServiceImpl implements DataService {
         });
     }
 
-    private Result verify(final String path, final String sqlName, final @NotNull SimpleDataTable table, final List<SimpleDataTable> data)
-            throws IOException {
+//    private Result verify(final String path, final String sqlName, final @NotNull SimpleDataTable table, final List<SimpleDataTable> data)
+//            throws IOException {
+//
+//        String verifySqlName = sqlName;
+//
+//        int fileIndex = 0;
+//        String message;
+//        int rowLength = table.getRows().length;
+//        while (helper.exists(path, verifySqlName)) {
+//            Map<String, ?> param;
+//            Map<String, ?> relatedParam = helper.getRelatedParameters(path, verifySqlName, data);
+//            Result result = new Result();
+//            for (int index = 0; index < rowLength; index++) {
+//                param = Global.merge(getParamMap(table, index), relatedParam);
+//                message = helper.queryForUpdate(path, verifySqlName, param, String.class);
+//                if (null != message) {
+//                    try {
+//                        result.setErrorNo(Integer.parseInt(message));
+//                        result.setMessage(ErrorManager.getMessage(path, result.getErrorNo(), param));
+//                    } catch (NumberFormatException e) {
+//                        result.setErrorNo(- fileIndex - 2);
+//                        result.setMessage(message);
+//                    }
+//                    return result;
+//                }
+//            }
+//
+//            verifySqlName = "%s.%d".formatted(sqlName, ++fileIndex);
+//        }
+//
+//        return null;
+//    }
 
-        String verifySqlName = sqlName;
+//    /**
+//     * @param path
+//     * @param name
+//     * @param data
+//     * @return
+//     */
+////    @Override
+//    private Result verify(final String path, final String name, final @NotNull List<SimpleDataTable> data) throws IOException {
+//
+//        String sqlName;
+//        Result result = null;
+//        Map<String, Object> param;
+//        for (SimpleDataTable table : data) {
+//            sqlName = "%s_%s.verify".formatted(name, table.getTableName());
+//            result = verify(path, sqlName, table, data);
+//            if (null == result)
+//                continue;
+//            if (0 != result.getErrorNo())
+//                return result;
+//        }
+//
+//        return null == result ? new Result() : result;
+//    }
 
-        int fileIndex = 0;
+    private Result verify(final String path, final String name, final Map<String, ?> param) throws IOException {
+
         String message;
-        int rowLength = table.getRows().length;
+        int fileIndex = 0;
+        String verifySqlName = "%s.verify".formatted(name);
         while (helper.exists(path, verifySqlName)) {
-            Map<String, Object> param;
-            Map<String, Object> relatedParam = helper.getRelatedParameters(path, verifySqlName, data);
-            Result result = new Result();
-            for (int index = 0; index < rowLength; index++) {
-                param = Global.merge(getParamMap(table, index), relatedParam);
-                message = helper.queryForUpdate(path, verifySqlName, param, String.class);
-                if (null != message) {
-                    try {
-                        result.setErrorNo(Integer.parseInt(message));
-                        result.setMessage(ErrorManager.getMessage(path, result.getErrorNo(), param));
-                    } catch (NumberFormatException e) {
-                        result.setErrorNo(- fileIndex - 2);
-                        result.setMessage(message);
-                    }
-                    return result;
+
+            message = helper.queryForUpdate(path, verifySqlName, param, String.class);
+            if (null != message) {
+                Result result = new Result();
+                try {
+                    result.setErrorNo(Integer.parseInt(message));
+                    result.setMessage(ErrorManager.getMessage(path, result.getErrorNo(), param));
+                } catch (NumberFormatException e) {
+                    result.setErrorNo(- fileIndex - 2);
+                    result.setMessage(message);
                 }
+                return result;
             }
 
-            verifySqlName = "%s.%d".formatted(sqlName, ++fileIndex);
+            verifySqlName = "%s.verify.%d".formatted(name, ++fileIndex);
         }
 
         return null;
-    }
-
-    /**
-     * @param path
-     * @param name
-     * @param data
-     * @return
-     */
-    @Override
-    public Result verify(final String path, final String name, final @NotNull List<SimpleDataTable> data) throws IOException {
-
-        String sqlName;
-        Result result = null;
-        Map<String, Object> param;
-        for (SimpleDataTable table : data) {
-            sqlName = "%s_%s.verify".formatted(name, table.getTableName());
-            result = verify(path, sqlName, table, data);
-            if (null == result)
-                continue;
-            if (0 != result.getErrorNo())
-                return result;
-        }
-
-        return null == result ? new Result() : result;
     }
 }

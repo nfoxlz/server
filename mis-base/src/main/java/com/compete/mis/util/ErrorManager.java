@@ -55,7 +55,7 @@ public final class ErrorManager {
         return result;
     }
 
-    public static String getMessage(final String path, final int no, final Map<String, Object> param) {
+    public static String getMessage(final String path, final int no, final Map<String, ?> param) {
 
         Map<Integer, String[]> pathMessageMap = messageCache.get(path, key -> {
             try {

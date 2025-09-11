@@ -7,4 +7,6 @@ public final class Constants {
     public static final String SESSION_TENANT_NAME = "SESSION_TENANT";
 
     public static final String SESSION_USER_NAME = "SESSION_USER";
+
+    public static final String SESSION_DATA_SIGNATURE = "SESSION_SIGNATURE";
 }
